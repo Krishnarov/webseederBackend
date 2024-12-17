@@ -13,6 +13,6 @@ const stickSchama=new mongoose.Schema({
 },{timestamps:true})
 
 
-const Stick = mongoose.model("stick", stickSchama);
+const StickNots = mongoose.model("StickNots", stickSchama);
 
-export default Stick;
+export default StickNots;

@@ -23,7 +23,6 @@ export const signup = async (req, res) => {
     await createUser.save();
     res.status(200).json({
       message: "user created successfull",
-      userid: createUser,
     });
   } catch (error) {
     console.log(error);
@@ -34,23 +33,35 @@ export const signup = async (req, res) => {
 //         + login logic +
 
 export const login = async (req, res) => {
+  const { email, password } = req.body;
   try {
-    const { email, password } = req.body;
     const user = await User.findOne({ email });
 
-    if (!user) {
-      return res.status(400).json({ message: "invalid credentials" });
-    }
+    if (!user) return res.status(400).json({ message: "invalid credentials" });
+
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
+    if (!isMatch)
       return res.status(400).json({ message: "invalid email or password" });
+    if (user.currentToken) {
+      user.currentToken = null;
+      await user.save();
+      return res
+        .status(403)
+        .json({ message: "User already logged in elsewhere" });
     }
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_KEY, { expiresIn: "1d" });
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_KEY, {
+      expiresIn: "1d",
+    });
     user.currentToken = token;
     await user.save();
 
-    return res.status(200).cookie("token",token,{ httpOnly: true, sameSite: 'None',secure: true, maxAge: 24 * 60 * 60 * 1000 }).json({message:`welcome back ${user.fullname}! `,user})
-    
+    return res
+      .cookie("token", token, {
+        httpOnly: true,
+        // sameSite: "None",
+        secure: process.env.NODE_ENV === "production",
+      })
+      .json({ message: `welcome back ${user.fullname}! `, user });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "internal server error" });
@@ -62,11 +73,12 @@ export const login = async (req, res) => {
 export const LogOut = async (req, res) => {
   try {
     const user = req.user;
-    console.log("user",user);
+    if (!user) return res.status(404).json({ message: "User not found" });
+    // console.log("user", user);
     user.currentToken = null;
     await user.save();
 
-    return res.status(200).json({ message: "Logged out successfully" });
+    res.clearCookie("token").json({ message: "Logout successful" });
   } catch (error) {
     console.log("Logout Error:", error);
     return res.status(500).json({ message: "Internal server error" });
