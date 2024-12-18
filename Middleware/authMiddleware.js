@@ -7,7 +7,7 @@ export const isAuthenticated = async (req, res, next) => {
   console.log("Cookies:", req.cookies); 
   console.log("Authorization Header:", req.headers.authorization);
   
-  if (!token) return res.status(401).json({ message: "Not authorized" });
+  if (!token) return res.status(401).json({ message: "Not authorized",token });
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_KEY);
