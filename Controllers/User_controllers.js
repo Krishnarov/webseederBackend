@@ -58,7 +58,7 @@ export const login = async (req, res) => {
     return res
       .cookie("token", token, {
         httpOnly: true,
-        // sameSite: "None",
+        sameSite: "None",
         secure: process.env.NODE_ENV === "production",
       })
       .json({ message: `welcome back ${user.fullname}! `, user });
@@ -73,6 +73,7 @@ export const login = async (req, res) => {
 export const LogOut = async (req, res) => {
   try {
     const user = req.user;
+
     if (!user) return res.status(404).json({ message: "User not found" });
     // console.log("user", user);
     user.currentToken = null;
