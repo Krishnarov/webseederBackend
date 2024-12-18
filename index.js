@@ -18,7 +18,7 @@ app.use(
     origin: "https://webseederfrontendbykrishna.netlify.app",
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
-  })
+    })
 );
 
 app.use("/user", authRoutes);
