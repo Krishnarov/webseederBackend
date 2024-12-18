@@ -1,9 +1,11 @@
 import User from "../Models/User_model.js";
 
 import jwt from "jsonwebtoken";
+ 
 
 export const isAuthenticated = async (req, res, next) => {
   const token = req.cookies?.token || req.headers.authorization?.split(" ")[1];
+
   console.log("Cookies:", req.cookies); 
   console.log("Authorization Header:", req.headers.authorization);
   
