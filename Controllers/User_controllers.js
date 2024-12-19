@@ -21,7 +21,7 @@ export const signup = async (req, res) => {
       usertype,
     });
     await createUser.save();
-    res.status(200).json({
+    res.status(201).json({
       message: "user created successfull",
     });
   } catch (error) {
@@ -43,8 +43,6 @@ export const login = async (req, res) => {
     if (!isMatch)
       return res.status(400).json({ message: "invalid email or password" });
     if (user.currentToken) {
-      // user.currentToken = null;
-      // await user.save();
       return res
         .status(403)
         .json({ message: "User already logged in elsewhere" });
@@ -74,8 +72,7 @@ export const login = async (req, res) => {
 
 //         + logOut and login  logic +
 
-
-export const logoutandlogin=async (req,res) => {
+export const logoutandlogin = async (req, res) => {
   const { email, password } = req.body;
   try {
     const user = await User.findOne({ email });
@@ -86,24 +83,20 @@ export const logoutandlogin=async (req,res) => {
     if (!isMatch)
       return res.status(400).json({ message: "invalid email or password" });
 
-      user.currentToken = null;
-      await user.save();
-      const token = jwt.sign({ userId: user._id }, process.env.JWT_KEY, {
-            expiresIn: "1d",
-          });
-          user.currentToken = token;
-          await user.save();
-      
-      return res
-        .status(201)
-        .json({ message: "Logout successful" });
+    user.currentToken = null;
+    await user.save();
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_KEY, {
+      expiresIn: "1d",
+    });
+    user.currentToken = token;
+    await user.save();
 
+    return res.status(201).json({ message: "Logout successful" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "internal server error" });
   }
-  
-}
+};
 
 //         + logOut logic +
 
