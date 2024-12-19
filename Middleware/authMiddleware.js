@@ -7,15 +7,15 @@ export const isAuthenticated = async (req, res, next) => {
   const token = req.cookies?.token || req.headers.authorization?.split(" ")[1];
 
   console.log("Cookies:", req.cookies); 
-  console.log("Authorization Header:", req.headers.authorization);
+  const herr=["Authorization Header:", req.headers.authorization];
   
-  if (!token) return res.status(401).json({ message: "Not authorized",token });
+  if (!token) return res.status(401).json({ message: "Not authorized",token ,herr});
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_KEY);
 
     if (!decoded) {
-      return res.status(401).json({ messeage: "invalied token", token: token });
+      return res.status(401).json({ messeage: "invalied token", token: token ,herr});
     }
     const user = await User.findById(decoded.userId);
     // console.log("user",user);
