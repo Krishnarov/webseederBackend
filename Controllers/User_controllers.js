@@ -43,8 +43,8 @@ export const login = async (req, res) => {
     if (!isMatch)
       return res.status(400).json({ message: "invalid email or password" });
     if (user.currentToken) {
-      user.currentToken = null;
-      await user.save();
+      // user.currentToken = null;
+      // await user.save();
       return res
         .status(403)
         .json({ message: "User already logged in elsewhere" });
@@ -56,31 +56,64 @@ export const login = async (req, res) => {
     await user.save();
 
     return res
-      .cookie("token", token, {
-        httpOnly: true,
-        sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
-        sameSite: "None",        
-        
-      })
-      .json({ message: `welcome back ${user.fullname}! `, user });
+      .status(201)
+      .json({ message: `Welcome back Er. ${user.fullname}! `, user });
+    // return res
+    //   .cookie("token", token, {
+    //     httpOnly: true,
+    //     sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+    //     sameSite: "None",
+
+    //   })
+    //   .json({ message: `welcome back ${user.fullname}! `, user });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "internal server error" });
   }
 };
 
+//         + logOut and login  logic +
+
+
+export const logoutandlogin=async (req,res) => {
+  const { email, password } = req.body;
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user) return res.status(400).json({ message: "invalid credentials" });
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch)
+      return res.status(400).json({ message: "invalid email or password" });
+
+      user.currentToken = null;
+      await user.save();
+      const token = jwt.sign({ userId: user._id }, process.env.JWT_KEY, {
+            expiresIn: "1d",
+          });
+          user.currentToken = token;
+          await user.save();
+      
+      return res
+        .status(201)
+        .json({ message: "Logout successful" });
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "internal server error" });
+  }
+  
+}
+
 //         + logOut logic +
 
 export const LogOut = async (req, res) => {
   try {
     const user = req.user;
-
     if (!user) return res.status(404).json({ message: "User not found" });
-    // console.log("user", user);
     user.currentToken = null;
     await user.save();
-
-    res.clearCookie("token").json({ message: "Logout successful" });
+    return res.status(200).json({ message: "Logout successful" });
   } catch (error) {
     console.log("Logout Error:", error);
     return res.status(500).json({ message: "Internal server error" });

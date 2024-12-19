@@ -2,6 +2,7 @@ import StickNots from "../Models/sticky_models.js";
 
 export const createStick = async (req, res) => {
   try {
+    const tkon=req.headers.authorization?.split(" ")[1];
     const user = req.user;
     if (!user) return res.status(403).json({ message: "User nahi hai" });
     const { title, content } = req.body;
@@ -19,9 +20,9 @@ export const createStick = async (req, res) => {
     await newStick.save();
     return res
       .status(201)
-      .json({ message: "Stick created successfully", newStick });
+      .json({ message: "Stick created successfully", newStick ,tkon});
   } catch (error) {
-    console.log(error);
+
     return res.status(500).json({ message: "Internal server error", error });
   }
 };
