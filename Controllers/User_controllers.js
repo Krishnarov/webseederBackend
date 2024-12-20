@@ -1,5 +1,6 @@
 import User from "../Models/User_model.js";
 import bcrypt from "bcryptjs";
+import { status } from "init";
 import jwt from "jsonwebtoken";
 
 //         + signup logic +
@@ -44,8 +45,9 @@ export const login = async (req, res) => {
       return res.status(400).json({ message: "invalid email or password" });
     if (user.currentToken) {
       return res
-        .status(403)
-        .json({ message: "User already logged in elsewhere" });
+        .status(200)
+        .json({ message: "User already logged in elsewhere" ,
+        });
     }
     const token = jwt.sign({ userId: user._id }, process.env.JWT_KEY, {
       expiresIn: "1d",
@@ -56,14 +58,6 @@ export const login = async (req, res) => {
     return res
       .status(201)
       .json({ message: `Welcome back Er. ${user.fullname}! `, user });
-    // return res
-    //   .cookie("token", token, {
-    //     httpOnly: true,
-    //     sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
-    //     sameSite: "None",
-
-    //   })
-    //   .json({ message: `welcome back ${user.fullname}! `, user });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "internal server error" });
