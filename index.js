@@ -10,6 +10,8 @@ import StickNots from "./Routes/stick_route.js";
 dotenv.config();
 connectDB();
 const app = express();
+
+
 app.use(express.json());
 app.use(cookieParser());
 
