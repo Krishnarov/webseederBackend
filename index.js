@@ -18,6 +18,7 @@ app.use(cookieParser());
 app.use(
   cors({
     origin: "https://webseederfrontendbykrishna.netlify.app",
+    // origin: "http://localhost:4000",
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
     })

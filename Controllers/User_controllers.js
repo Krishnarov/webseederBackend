@@ -1,13 +1,12 @@
 import User from "../Models/User_model.js";
 import bcrypt from "bcryptjs";
-import { status } from "init";
 import jwt from "jsonwebtoken";
 
 //         + signup logic +
 export const signup = async (req, res) => {
   try {
-    const { fullname, email, password, usertype } = req.body;
-    if (!fullname || !email || !password || !usertype) {
+    const { fullname, email, password } = req.body;
+    if (!fullname || !email || !password ) {
       return res.status(400).json({ message: "something is missing" });
     }
     const userExists = await User.findOne({ email });
@@ -19,7 +18,7 @@ export const signup = async (req, res) => {
       fullname,
       email,
       password: hasPassword,
-      usertype,
+
     });
     await createUser.save();
     res.status(201).json({

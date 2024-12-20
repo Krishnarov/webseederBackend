@@ -15,10 +15,6 @@ const userSchama = new mongoose.Schema(
       type: String,
       require: true,
     },
-    usertype: {
-      type: String,
-      required: true,
-    },
     currentToken: { type: String, default: null },
   },
   { timestamps: true }
