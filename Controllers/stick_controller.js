@@ -5,7 +5,7 @@ export const createStick = async (req, res) => {
 
     const user = req.user;
     if (!user) return res.status(403).json({ message: "User nahi hai" });
-    const { title, content ,date} = req.body;
+    const { title, content ,date,category} = req.body;
     if (!title || !content) {
       return res
         .status(400)
@@ -16,6 +16,7 @@ export const createStick = async (req, res) => {
       title,
       content,
       date,
+      category,
       createdBy:user._id,
 
     });
