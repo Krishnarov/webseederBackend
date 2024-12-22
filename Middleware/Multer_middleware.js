@@ -1,6 +1,6 @@
 import multer from 'multer';
 import { CloudinaryStorage } from 'multer-storage-cloudinary';
-import cloudinary from 'cloudinary.v2';
+import { v2 as cloudinary } from 'cloudinary'; // Correct for ESM
 
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
