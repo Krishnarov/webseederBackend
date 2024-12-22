@@ -112,7 +112,7 @@ export const update = async (req, res) => {
     const { fullname } = req.body;
     const photo = req.file ? req.file.path : undefined;
     if (!fullname || ! photo || !userId) {
-      return res.status(400).json({ message: "something is missing" });
+      return res.status(400).json({ message: "something is missing",photo,fullname,userId });
     }
     user.fullname = fullname;
     user.photo = photo;
