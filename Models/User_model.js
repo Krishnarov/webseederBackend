@@ -15,6 +15,7 @@ const userSchama = new mongoose.Schema(
       type: String,
       require: true,
     },
+    photo: { type: String, default: null },
     currentToken: { type: String, default: null },
   },
   { timestamps: true }
