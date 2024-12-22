@@ -110,10 +110,16 @@ export const update = async (req, res) => {
     // if (!user) return res.status(404).json({ message: "User not found" });
     const userId = req.params.id;
     const { fullname } = req.body;
-    const photo = req.file ? req.file.path : undefined;
+    const photo = req.file?.path 
+if (!photo) {
+  return res.status(400).json({message:"photo nahi hai"})
+}
+
+
+
     const user=await User.findById(userId)
     if (!user) {
-      return res.status(400).json({ message: "something is missing","photosssss":photo,user });
+      return res.status(400).json({ message: "something is missing" });
     }
     if (fullname) user.fullname = fullname;
     if (photo) user.photo = photo;
