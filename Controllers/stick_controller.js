@@ -74,17 +74,19 @@ export const deletesticky=async (req,res) => {
 export const TaskDone=async (req,res) => {
 
   const {id}=req.params
+  const {isDone}=req.body
+  
   try {
     if(!id){
       return res.status(400).json({ message: "ID is required" });
     }
-    const StickNots = await StickNots.findOne({ _id: id });
-    if (!StickNots) {
+    const StickNot = await StickNots.findByIdAndUpdate({ _id: id },{isDone});
+    if (!StickNot) {
       return res.status(404).json({ message: "StickNots not found" });
     }
-    StickNots.isDone=true;
-    StickNots.save();
-    return res.status(200).json({ message: "Task Done  successfully",StickNots });
+    // StickNot.isDone=true;
+    // StickNot.save();
+    return res.status(200).json({ message: "Task Done  successfully",StickNot });
 
   } catch (error) {
     res.status(500).json({message:"Internal server error", error})
