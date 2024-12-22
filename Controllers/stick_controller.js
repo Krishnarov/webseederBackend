@@ -84,7 +84,7 @@ export const TaskDone=async (req,res) => {
     }
     StickNots.isDone=true;
     StickNots.save();
-    return res.status(200).json({ message: "StickNots deleted successfully" });
+    return res.status(200).json({ message: "Task Done  successfully",StickNots });
 
   } catch (error) {
     res.status(500).json({message:"Internal server error", error})
