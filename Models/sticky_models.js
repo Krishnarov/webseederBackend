@@ -13,7 +13,7 @@ const stickSchama = new mongoose.Schema(
     isDone : {type:Boolean,default:false}
     ,
     category: String,
-    date: { type: Date, default: Date.now },
+    date: { type: Date, default: Date.now() },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "user",
