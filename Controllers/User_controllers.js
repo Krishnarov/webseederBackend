@@ -84,7 +84,7 @@ export const logoutandlogin = async (req, res) => {
     user.currentToken = token;
     await user.save();
 
-    return res.status(201).json({ message: "Logout successful" ,user });
+    return res.status(201).json({ message: "Login successful" ,user ,token});
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "internal server error" });

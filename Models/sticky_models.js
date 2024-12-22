@@ -10,6 +10,8 @@ const stickSchama = new mongoose.Schema(
       type: String,
       require: true,
     },
+    isDone : {type:Boolean,default:false}
+    ,
     category: String,
     date: { type: Date, default: Date.now },
     createdBy: {
