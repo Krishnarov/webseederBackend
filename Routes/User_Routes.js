@@ -9,7 +9,7 @@ route.post("/register",signup)
 route.post("/login",login)
 route.post("/logoutandlogin",logoutandlogin)
 route.post("/logout",isAuthenticated, LogOut);
-route.upt("/update/:id",upload.single('photo'),isAuthenticated, update);
+route.put("/update/:id",upload.single('photo'),isAuthenticated, update);
 
 
 export default route
