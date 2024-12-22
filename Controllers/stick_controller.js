@@ -78,7 +78,7 @@ export const TaskDone=async (req,res) => {
     if(!id){
       return res.status(400).json({ message: "ID is required" });
     }
-    const StickNots = await StickNots.findById(id);
+    const StickNots = await StickNots.findOne(id);
     if (!StickNots) {
       return res.status(404).json({ message: "StickNots not found" });
     }
