@@ -106,18 +106,13 @@ export const LogOut = async (req, res) => {
 
 export const update = async (req, res) => {
   try {
-    // const user = req.user;
-    // if (!user) return res.status(404).json({ message: "User not found" });
     const userId = req.params.id;
     const { fullname } = req.body;
-    const photo = req.file?.path 
-if (!photo) {
-  return res.status(400).json({message:"photo nahi hai"})
-}
-
-
-
-    const user=await User.findById(userId)
+    const photo = req.file?.path;
+    if (!photo) {
+      return res.status(400).json({ message: "photo nahi hai" });
+    }
+    const user = await User.findById(userId);
     if (!user) {
       return res.status(400).json({ message: "something is missing" });
     }
@@ -125,7 +120,8 @@ if (!photo) {
     if (photo) user.photo = photo;
     await user.save();
     res.status(200).json({
-      message: "user updated successfull",user
+      message: "user updated successfull",
+      user
     });
   } catch (error) {
     console.log(error);
