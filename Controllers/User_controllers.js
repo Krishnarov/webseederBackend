@@ -106,14 +106,15 @@ export const LogOut = async (req, res) => {
 
 export const update = async (req, res) => {
   try {
-    const user = req.user;
-    if (!user) return res.status(404).json({ message: "User not found" });
+    // const user = req.user;
+    // if (!user) return res.status(404).json({ message: "User not found" });
     const userId = req.params;
     const { fullname } = req.body;
     const photo = req.file ? req.file.path : undefined;
     if (!fullname || ! photo || !userId) {
       return res.status(400).json({ message: "something is missing",photo,fullname,userId });
     }
+    const user=await User.findById(userId)
     user.fullname = fullname;
     user.photo = photo;
     await user.save();
