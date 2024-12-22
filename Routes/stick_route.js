@@ -6,6 +6,6 @@ router.post("/create", isAuthenticated, createStick);
 router.post("/getAllSticksbyId", isAuthenticated, getAllSticksbyId);
 router.get("/getAllSticks", getAllSticks);
 router.delete("/deletesticky/:id",isAuthenticated, deletesticky);
-router.put("/taskdone/:id",isAuthenticated, TaskDone);
+router.post("/taskdone/:id",isAuthenticated, TaskDone);
 
 export default router;
