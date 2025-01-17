@@ -7,6 +7,7 @@ import authRoutes from "./Routes/User_Routes.js";
 import cookieParser from "cookie-parser";
 import StickNots from "./Routes/stick_route.js";
 
+
 dotenv.config();
 connectDB();
 const app = express();

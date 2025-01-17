@@ -108,10 +108,11 @@ export const update = async (req, res) => {
   try {
     const userId = req.params.id;
     const { fullname } = req.body;
-    const photo = req.file.path;
-    // console.log(req);
+    const photo = req.file?.path;
+
+    
     if (!photo) {
-      return res.status(400).json({ message: "photo nahi hai" ,"req files----":req.file});
+      return res.status(400).json({ message: "Photo is required" });
     }
     const user = await User.findById(userId);
     if (!user) {
@@ -122,13 +123,12 @@ export const update = async (req, res) => {
     await user.save();
     res.status(200).json({
       message: "user updated successfull",
-      user
+      user,
     });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "intern server error", error });
   }
 };
-
 
 // fix: improve error handling for missing photo in user update
